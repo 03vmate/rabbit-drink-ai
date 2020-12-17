@@ -1,0 +1,50 @@
+<html>
+    <head>
+        <title>Nyuszi</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+        <link rel="stylesheet" href="index.css">
+    </head>
+    <body style="background-color: #333333; color:aliceblue;">
+        <div class="container-fluid">
+            <div class="row justify-content-md-center">
+                <div class="col" style="text-align: center;">
+                    <h1>Nyuszi</h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <canvas id="chart" style="width: 100%; height: 300px;"></canvas>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md box">
+                    <h6>Ma ivott</h6>
+                    <h3 id="today"></h3>
+                </div>
+                <div class="col-md box">
+                    <h6>Utolso 24 oraban ivott</h6>
+                    <h3 id="last24h"></h3>
+                </div>
+                <div class="col-md box">
+                    <h6>Atlag napi ivas</h6>
+                    <h3 id="avg24h"></h3>
+                </div>
+                <div class="col-md box">
+                    <h6>Utolso 24 ora valtozas</h6>
+                    <h3 id="avg24hchange"></h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col d-flex justify-content-center">
+                    <div class="iframecontainer">
+                        <iframe class="responsive-iframe" src="/cam"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
+        <script src="index.js"></script>
+    </body>
+</html>
