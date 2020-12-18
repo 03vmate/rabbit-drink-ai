@@ -13,7 +13,7 @@ if($_GET['data'] == "raw") {
 }
 if($_GET['data'] == "avg_lastweek") {
     $weekago = time() - 604800;
-    $result = $conn->query("SELECT COUNT(score)/168 as r FROM Drink WHERE score > 0 AND timestamp >= " . $weekago);
+    $result = $conn->query("SELECT COUNT(score)/7 as r FROM Drink WHERE score > 0 AND timestamp >= " . $weekago);
     if ($result->num_rows > 0) {
         while($row = $result->fetch_assoc()) {
            echo $row["r"];
