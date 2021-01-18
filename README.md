@@ -1,27 +1,28 @@
 # rabbit-drink-ai
+Monitors water consumption of a pet by using a microphone to pick up audio, and TensorFlow to figure out if the pet is drinking or not
 
 ## Training
 
 ### preprocess.py
-Training set 16ksps-re atalakitasa, 1mp-es reszekre vagasa
+Converts audio files to 16ksps 1 second files
 
 ### ai_hypertune.py
-Legjobb hyperparameterek keresese
+Hyperparameter tuning
 
 ### ai.py
-Model training es mentes
+Model training
 
-## Raspberry Pi-on futo
+## Running on a RPi
 
 ### rpi.py
-Mentett model segitsegevel felismeres elvegzese
+Runs detection
 
 ### live.py
-Kamera MJPEG szerver (modositott pelda kod innen: https://picamera.readthedocs.io/en/release-1.13/recipes2.html#web-streaming)
+Raspberry Pi Camera Server (https://picamera.readthedocs.io/en/release-1.13/recipes2.html#web-streaming)
 
 ### ai.service
-Systemd service az AI inditasahoz
+Systemd service for ai.py
 
 ### live.service
-Systemd service a kamera szerver inditasahoz
+Systemd service for live.py
 
