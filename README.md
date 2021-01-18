@@ -1,5 +1,6 @@
 # rabbit-drink-ai
-Monitors water consumption of a pet by using a microphone to pick up audio, and TensorFlow to figure out if the pet is drinking or not
+Monitors water consumption of a pet by using a microphone to pick up audio, and TensorFlow to figure out if the pet is drinking or not.
+Data is stored in MySQL/MariaDB, with a PHP API and a static JS frontend.
 
 ## Training
 
@@ -25,4 +26,9 @@ Systemd service for ai.py
 
 ### live.service
 Systemd service for live.py
+
+## Webpages
+
+## api.php
+Exposes data from the SQL DB
 
