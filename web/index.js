@@ -1,8 +1,9 @@
 fetch("/api.php?data=raw").then(Response => Response.json()).then(data => {
   fetch("/api.php?data=avg_lastweek").then(Response => Response.text()).then(avglastweek => {
-      var sum = 0;
-      for(var x in data) { sum += data[x] > 0 ? 1 : 0; }
+      var sum = Object.keys(data).length;
 
+
+      //Calculate how much was drank today
       var sumToday = 0;
       for(var x in data) {
           var dataDay = new Date(x * 1000).getDay();
@@ -13,30 +14,34 @@ fetch("/api.php?data=raw").then(Response => Response.json()).then(data => {
       }
 
 
+      //Process data so that chartjs can make a nice chart out of it
       var processed_data = []
+      var hours = []
       for(var x in data) {
-          var timestamp = new Date(x * 1000);
-          var h = timestamp.getHours();
-          var v = data[x];
-          processed_data.push({h, v});
+        var h = new Date(x * 1000).getHours();
+        var v = data[x]
+        processed_data.push({h,v});
+        if(!hours.includes(h.toString())) {
+          hours.push(h.toString())
+        }
       }
 
-      var breakdown_data = [];
       var breakdown_label = [];
-      var hourCounter = processed_data[0]["h"];
-      var sumCounter = 0
-      for(var x in processed_data) {
-          if(processed_data[x]["h"] != hourCounter) {
-              breakdown_data.push(sumCounter);
-              breakdown_label.push(hourCounter + "h");
-              hourCounter = processed_data[x]["h"];
-              sumCounter = 0;
-          }
-          if(processed_data[x]["v"] > 0) sumCounter++;
+      ts = Date.now() + 3600000
+      indx = 0;
+      for(var i = 0; i < 24; i++) {
+        breakdown_label[indx] = new Date(ts).getHours().toString()
+        ts += 3600000
+        indx++
       }
-      breakdown_data.push(sumCounter);
-      breakdown_label.push(hourCounter + "h");
 
+      var breakdown_data = new Array(24).fill(0)
+      for(x in processed_data) {
+        var pos = ind(breakdown_label, processed_data[x]["h"].toString())
+        breakdown_data[pos] += 1
+      }
+
+      //Update values
       var _avgLastWeek = parseFloat(avglastweek);
       document.getElementById("today").innerHTML = sumToday;
       document.getElementById("last24h").innerHTML = sum;
@@ -56,13 +61,14 @@ fetch("/api.php?data=raw").then(Response => Response.json()).then(data => {
         }
       }
 
+      //Draw chart
       new Chart(document.getElementById("chart"), {
           type: 'bar',
           data: {
             labels: breakdown_label,
             datasets: [
               {
-                label: "Ivott mennyiseg",
+                label: "Amount Drank",
                 backgroundColor: "#21719c",
                 data: breakdown_data
               }
@@ -74,3 +80,12 @@ fetch("/api.php?data=raw").then(Response => Response.json()).then(data => {
       });
   });
 });
+
+//Built-in function returned incorrect values in some scenarios
+function ind(arr, val) {
+  for(var i = 0; i < arr.length; i++) {
+    if(arr[i] == val) {
+      return i;
+    }
+  }
+}

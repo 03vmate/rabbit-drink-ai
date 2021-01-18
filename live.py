@@ -1,3 +1,5 @@
+#Modified example from https://picamera.readthedocs.io/en/release-1.13/recipes2.html#web-streaming
+
 from fractions import Fraction
 import io
 import picamera

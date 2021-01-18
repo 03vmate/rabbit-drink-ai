@@ -4,6 +4,8 @@
     width: 100%;
     padding-top: 75%; /* 16:9 Aspect Ratio (divide 9 by 16 = 0.5625) */
 }
+
+/* Then style the iframe to fit in the container div with full height and width */
 .responsive-iframe {
     position: absolute;
     top: 0;
@@ -13,9 +15,23 @@
     width: 100%;
     height: 100%;
 }
+
 .box {
     padding-top: 8px;
     margin: 20px;
     border-radius: 8px;
     background-color: #444444;
+}
+
+body {
+    background-color: #333333;
+    color:aliceblue;
+}
+
+.title {
+    text-align: center;
+}
+
+.chart {
+    width: 100%; height: 300px;
 }

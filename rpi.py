@@ -8,30 +8,31 @@ import mysql.connector
 import time
 import math
 
+#Connect to MySQL
 db = mysql.connector.connect(host="127.0.0.1", user="pi", password="qwerty", database="DrinkAI")
 
+#Load model
 model = tf.keras.models.load_model('model/ai')
 
-lastTimestamp = 0
-
 def process(data):
-    global lastTimestamp
     global db
     unixtime = int(time.time())
+
+    #Normalize data
     data = data / (np.max(data) if np.max(data) > abs(np.min(data)) else abs(np.min(data)))
+
+    #Predict
     pred = model.predict(np.expand_dims(data,0))
 
     score = pred[0][1]-pred[0][0]
+
+    #Write score to DB
     if(not math.isnan(score)):
         try:
             c = db.cursor()
-            if(lastTimestamp != 0):
-                if(unixtime - lastTimestamp > 1):
-                    for i in range(int((unixtime - lastTimestamp) - 1)):
-                        c.execute("INSERT INTO Drink (score, timestamp) VALUES (%s, %s)", (float(score), lastTimestamp + i + 1))
             c.execute("INSERT INTO Drink (score, timestamp) VALUES (%s, %s)", (float(score), unixtime))
-            lastTimestamp = unixtime
             db.commit()
+        #Sometimes the db connection is broken, retry
         except Exception as e:
             print(e)
             db = mysql.connector.connect(host="127.0.0.1", user="pi", password="qwerty", database="DrinkAI")
@@ -40,8 +41,11 @@ def process(data):
 thr = None
 try:
     while(True):
+        #Record 16000 samples (1sec) of audio from the microphone
         data = adc.rec(16000, samplerate=16000, channels=1).flatten()
         adc.wait()
+
+        #Inference
         thr = Thread(target=process, args=(data,))
         thr.start()
 except KeyboardInterrupt:
